@@ -1,7 +1,7 @@
 # veridionChallenge
 
 
-# 1.Selectia datelor
+# 1. Selectia datelor
 Pentru inceput, am analizat in mare dataset-ul, si am ales coloanele relevante pentru identificarea unei companii. Pentru aceasta operatie am folosit un script in python sa putem separa doar coloanele selectate pentru identificare fata de dataset-ul original.
 
 Coloanele selectate din dataset-ul original au fost:
@@ -80,13 +80,13 @@ def main():
 if __name__ == "__main__":
     main()
 ```
-# 2.Curatarea si normalizarea datelor
+# 2. Curatarea si normalizarea datelor
 
 ## Am folosit script-uri necesare pentru curatarea datelor si normalizarea lor.
 Am curatat randurile ce erau complet goale pentru ca nu aduc niciun fel de informatie si doar incarca fisierul.
 
 
-# 3.Gasirea Companiilor Unice
+# 3. Gasirea Companiilor Unice
 
 Mai departe pentru a gasirea de "aceeasi companie", am folosit `clusterizarea` si `blocking` pentru a rezolva partea de viteza, sa nu comparam tot cu tot, formand o noua coloana de `cluster_id` in noul Fisier .`xlsx` salvat. Aceste doua metode functioneza bine pe acest dataset, unde exista campuri relevante pentru aceasta problema (ex: domain, email, telefon), perfect pentru fuzzy matching(numele companiilor pot varia), si este rapid si scalabil pentru a lucra pe milioane de randuri ceea ce face o metoda standard pentu "entity resolution".
 -Pentru vizualizarea script-urilor, le-am incarcat in repository pentru descarcare
