@@ -8,7 +8,7 @@ Coloanele selectate din dataset-ul original au fost:
 `company_name`, `company_legal_names`, `company_commercial_names`, `main_country`, `main_city`, `main_postcode`,
 `main_address_raw_text`, `website_domain`, `all_domains`, `primary_email`, `emails`, `primary_phone`, `phone_numbers`.
 
-** Scriptul folosit pentru extragerea coloanelor: **
+ Scriptul folosit pentru extragerea coloanelor: 
 ```python
 import pandas as pd
 
