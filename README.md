@@ -1,4 +1,4 @@
-# veridionChallange
+# veridionChallenge
 
 
 ## 1.Selectia datelor
