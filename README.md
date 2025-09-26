@@ -61,6 +61,8 @@ In cazul coloanelor :
 Iar in cazul adresei companiei presupunem ca LLM-urile nu au gasit o locatie a companiei.
 -
 
+Celulele goale nu ne aduc informatie si doar incarca fisierul asa ca o sa le curatam.
+
 De mentionat ca am convertit si fisierul `.parquet` in `xlsx` prin script-ul:
 
 ```python
