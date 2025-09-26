@@ -90,6 +90,7 @@ Am curatat randurile ce erau complet goale pentru ca nu aduc niciun fel de infor
 
 Mai departe pentru a gasirea de "aceeasi companie", am folosit `clusterizarea` si `blocking` pentru a rezolva partea de viteza, sa nu comparam tot cu tot, formand o noua coloana de `cluster_id` in noul Fisier .`xlsx` salvat. Aceste doua metode functioneza bine pe acest dataset, unde exista campuri relevante pentru aceasta problema (ex: domain, email, telefon), perfect pentru fuzzy matching(numele companiilor pot varia), si este rapid si scalabil pentru a lucra pe milioane de randuri ceea ce face o metoda standard pentu "entity resolution".
 -Pentru vizualizarea script-urilor, le-am incarcat in repository pentru descarcare
+Script-ul in python pentru `blocking` si `clusterizare` este: `uniqueCompanies.py`
 
 ## Am incarcat si fisierele excel pentru vizualizarea acestora in detaliu
 De ce am folosit `.xlsx` si nu `.csv`?
