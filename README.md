@@ -55,7 +55,7 @@ In cazul coloanelor :
 
 -`primary_phone`: Nu a fost gasit un numar al companiei de catre LLM
 
-##De mentionat ca am convertit si fisierul `.parquet` in `xlsx` prin script-ul:
+## De mentionat ca am convertit si fisierul `.parquet` in `xlsx` prin script-ul:
 
 ```python
 import pandas as pd
