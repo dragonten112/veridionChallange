@@ -8,7 +8,7 @@ Coloanele selectate din dataset-ul original au fost:
 `company_name`, `company_legal_names`, `company_commercial_names`, `main_country`, `main_city`, `main_postcode`,
 `main_address_raw_text`, `website_domain`, `all_domains`, `primary_email`, `emails`, `primary_phone`, `phone_numbers`.
 
-**Scriptul folosit pentru extragerea coloanelor:**
+** Scriptul folosit pentru extragerea coloanelor: **
 ```python
 import pandas as pd
 
@@ -55,7 +55,7 @@ In cazul coloanelor :
 
 -`primary_phone`: Nu a fost gasit un numar al companiei de catre LLM
 
-## De mentionat ca am convertit si fisierul `.parquet` in `xlsx` prin script-ul:
+# De mentionat ca am convertit si fisierul `.parquet` in `xlsx` prin script-ul:
 
 ```python
 import pandas as pd
@@ -91,7 +91,7 @@ Am curatat randurile ce erau complet goale pentru ca nu aduc niciun fel de infor
 Mai departe pentru a gasirea de "aceeasi companie", am folosit `clusterizarea` si `blocking` pentru a rezolva partea de viteza, sa nu comparam tot cu tot, formand o noua coloana de `cluster_id` in noul Fisier .`xlsx` salvat. Aceste doua metode functioneza bine pe acest dataset, unde exista campuri relevante pentru aceasta problema (ex: domain, email, telefon), perfect pentru fuzzy matching(numele companiilor pot varia), si este rapid si scalabil pentru a lucra pe milioane de randuri ceea ce face o metoda standard pentu "entity resolution".
 -Pentru vizualizarea script-urilor, le-am incarcat in repository pentru descarcare
 
-** Am incarcat si fisierele excel pentru vizualizarea acestora in detaliu
+# Am incarcat si fisierele excel pentru vizualizarea acestora in detaliu
 De ce am folosit `.xlsx` si nu `.csv`?
 R: Deoarece nu exista nicio diferenta in a lucra cu ambele extensii, doar singurul fapt ca `.csv` este mai rapid si mai optim pentru prelucrarea datelor, dar de aceasta data nu a fost nevoie pentru conversia in `.csv`.
 
