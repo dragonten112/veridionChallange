@@ -92,8 +92,86 @@ Mai departe pentru a gasirea de "aceeasi companie", am folosit `clusterizarea` s
 -Pentru vizualizarea script-urilor, le-am incarcat in repository pentru descarcare
 Script-ul in python pentru `blocking` si `clusterizare` este: `uniqueCompanies.py`
 
+# Ce tip de Blocking am folosit:
+Rule-based blocking cu reguli simple pe campuri cu valoare foarte puternica, nu am folosit metode avansate de tip LSH, sorted neighborhood, sau canopy clustering, deoarece pe un fisier in jur de 279365 de date (`coloane_extrase`) este suficient si foarte eficient.
+Blocking-ul acesta este simplu si scalabil unde fiecare bloc are un criteriu clar, # eficient, unde nu comparam fiecare rand cu fiecare, pentru evitarea timpului indelungat de procesare, ci doar in interiorul blocurilor.
+Nu exista scoruri de tip `fuzzy matching`, doar egalitate exacta.
+
+
+```python
+if "website_domain" in df.columns:
+    for idx, val in df["website_domain"].dropna().items():
+        blocks.setdefault(("domain", str(val).lower()), []).append(idx)
+
+# Blocking pe primary_phone
+if "primary_phone" in df.columns:
+    for idx, val in df["primary_phone"].dropna().items():
+        blocks.setdefault(("phone", str(val)), []).append(idx)
+
+# Blocking pe primary_email
+if "primary_email" in df.columns:
+    for idx, val in df["primary_email"].dropna().items():
+        blocks.setdefault(("email", str(val).lower()), []).append(idx)
+
+# Blocking pe company_name + country + city
+if {"company_name", "main_country", "main_city"}.issubset(df.columns):
+    for idx, row in df.iterrows():
+        if pd.notna(row["company_name"]) and pd.notna(row["main_country"]) and pd.notna(row["main_city"]):
+            key = ("name_loc",
+                   str(row["company_name"]).lower(),
+                   str(row["main_country"]).lower(),
+                   str(row["main_city"]).lower())
+            blocks.setdefault(key, []).append(idx)
+
+```
+Aici, in bucata de cod afisata, fiecare cheie (domain,phone,email) creeaza un grup cu toti indexii de randuri care impart acea valoare.
+
+# Ce tip de Clustering am folosit:
+Am folosit o abordare de graph clustering / union-find bazata pe compenentele de :
+- Blocking de a construit grupuri de "candidati", de ex: inregistrarile cu acelasi `website_domain`.
+- In interiorul feicarui block am legat inregistrarile prin reguli (domain-email-telefon-nume+loc)
+- Am cautat componentele conexe ale grafului unde toate nodurile formeaza un cluster iar acel cluster primeste un `cluster_id`.
+
+```python
+
+
+cluster_id = [-1] * len(df)
+current_cluster = 0
+
+
+for group in blocks.values():
+    assigned = [i for i in group if cluster_id[i] != -1]
+    if assigned:
+        cid = cluster_id[assigned[0]]
+    else:
+        cid = current_cluster
+        current_cluster += 1
+    for i in group:
+        cluster_id[i] = cid
+
+
+for i in range(len(df)):
+    if cluster_id[i] == -1:
+        cluster_id[i] = current_cluster
+        current_cluster += 1
+
+df["cluster_id"] = cluster_id
+
+```
+Asta este fix algoritmul union-find components clustering unde:
+- Daca doua randuri apar in acelasi loc, primesc acelasi cluster_id
+- Daca un rand e conectat printr-un lant A-B-C -> toate ajung la acelasi cluster
+- Daca un rand nu are nicio legatura, primeste un cluster unic.
+
+
 ## Am incarcat si fisierele excel pentru vizualizarea acestora in detaliu
 De ce am folosit `.xlsx` si nu `.csv`?
 R: Deoarece nu exista nicio diferenta in a lucra cu ambele extensii, doar singurul fapt ca `.csv` este mai rapid si mai optim pentru prelucrarea datelor, dar de aceasta data nu a fost nevoie pentru conversia in `.csv`.
 
+## Abordarea a fost gandita sa fie simpla si eficienta cu tehnologiile aferente si potrivite pentru task-ul cerut:
+1. Selectarea atributelor cu adeverat relevante din dataset-ul original de tip `.parquet` pentru identificarea companiilor
+2. Aplicarea preprocesarii datelor corespunzatoare
+3. Folosirea tehnicii Rule-Based Blocking pentru a reduce masiv nr. de comparatii.
+4. Aplicarea ## Clusterizarii, obtinand grupuri clare de `deduplicate`.
+5. Rezultatul final salvat pentru vizualizarea datelor.
 
